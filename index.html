@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디자인 작업 요청 센터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-brand { background-color: #722F37; }
+        .text-brand { color: #722F37; }
+        .border-brand { border-color: #722F37; }
+        .hover-bg-brand:hover { background-color: #5c252c; }
+        .focus-ring-brand:focus { --tw-ring-color: #722F37; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
+
+    <header class="bg-brand text-white shadow-lg">
+        <div class="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-pen-ruler text-2xl text-rose-200"></i>
+                <h1 class="text-xl font-bold tracking-wide">DESIGN REQUEST CENTER</h1>
+            </div>
+            <span class="text-xs bg-white/20 text-white px-3 py-1 rounded-full border border-white/30">본사 디자인팀</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex border-b border-slate-200 mb-8 bg-white rounded-t-xl p-2 shadow-sm">
+            <button id="tab-create-btn" onclick="switchTab('create')" class="flex-1 py-3 font-semibold text-center text-brand border-b-2 border-brand transition">
+                <i class="fa-solid fa-paper-plane mr-2"></i>새 디자인 요청하기
+            </button>
+            <button id="tab-lookup-btn" onclick="switchTab('lookup')" class="flex-1 py-3 font-semibold text-center text-slate-500 hover:text-slate-700 transition">
+                <i class="fa-solid fa-list-check mr-2"></i>내 요청 조회 / 수정 · 취소
+            </button>
+        </div>
+
+        <section id="section-create" class="bg-white rounded-2xl shadow-md p-6 sm:p-10">
+            <h2 class="text-lg font-bold text-slate-900 mb-6 pb-2 border-b border-slate-100">요청서 작성</h2>
+            <form id="create-form" onsubmit="handleCreate(event)" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">요청 카테고리 *</label>
+                    <select id="c-request-type" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                        <option value="">카테고리를 선택해 주세요</option>
+                        <option value="가맹점 디자인 요청서">가맹점 디자인 요청서</option>
+                        <option value="마케팅 디자인 요청서">마케팅 디자인 요청서</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">지점명 / 부서명 *</label>
+                        <input type="text" id="c-store" required placeholder="예: 강남점 또는 마케팅팀" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
+                        <input type="text" id="c-sv" required placeholder="예: 홍길동" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
+                        <input type="text" id="c-contact" required placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
+                        <input type="date" id="c-deadline" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">세부 디자인 유형 *</label>
+                    <select id="c-category" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                        <option value="">세부 유형을 선택해 주세요</option>
+                        <option value="매장 POP / 포스터">매장 POP / 포스터</option>
+                        <option value="메뉴판 수정">메뉴판 수정</option>
+                        <option value="SNS / 온라인 홍보물">SNS / 온라인 홍보물</option>
+                        <option value="현수막 / 외부 배너">현수막 / 외부 배너</option>
+                        <option value="프로모션 / 마케팅 제작물">프로모션 / 마케팅 제작물</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">상세 요청 내용 *</label>
+                    <textarea id="c-details" required rows="5" placeholder="사이즈, 문구, 참고사항을 상세히 기재해주세요." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition"></textarea>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full py-4 bg-brand hover-bg-brand text-white font-bold rounded-xl shadow-lg transition duration-200">
+                    디자인 요청 제출하기
+                </button>
+            </form>
+        </section>
+
+        <section id="section-lookup" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+                <h2 class="text-lg font-bold text-slate-900 mb-4">내 요청 내역 찾기</h2>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="l-sv" placeholder="작성자 성함" class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                    <input type="text" id="l-contact" placeholder="연락처 (예: 010-1234-5678)" class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                    <button onclick="fetchRequests()" class="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg transition">조회</button>
+                </div>
+            </div>
+            <div id="results-container" class="space-y-4"></div>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbzolnVhCXEHZcT3hobz-JbbdjM9BhRznEcMt75digtzGDxwPSG1zs8BZtLCQlgm43J_pA/exec";
+
+        function switchTab(tab) {
+            const createBtn = document.getElementById('tab-create-btn');
+            const lookupBtn = document.getElementById('tab-lookup-btn');
+            const createSec = document.getElementById('section-create');
+            const lookupSec = document.getElementById('section-lookup');
+
+            if(tab === 'create') {
+                createBtn.className = "flex-1 py-3 font-semibold text-center text-brand border-b-2 border-brand transition";
+                lookupBtn.className = "flex-1 py-3 font-semibold text-center text-slate-500 hover:text-slate-700 transition";
+                createSec.classList.remove('hidden');
+                lookupSec.classList.add('hidden');
+            } else {
+                lookupBtn.className = "flex-1 py-3 font-semibold text-center text-brand border-b-2 border-brand transition";
+                createBtn.className = "flex-1 py-3 font-semibold text-center text-slate-500 hover:text-slate-700 transition";
+                lookupSec.classList.remove('hidden');
+                createSec.classList.add('hidden');
+            }
+        }
+
+        async function handleCreate(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerText = "제출 중...";
+
+            const payload = {
+                action: "CREATE",
+                store: `[${document.getElementById('c-request-type').value}] ${document.getElementById('c-store').value}`,
+                sv_name: document.getElementById('c-sv').value,
+                contact: document.getElementById('c-contact').value,
+                deadline: document.getElementById('c-deadline').value,
+                category: document.getElementById('c-category').value,
+                details: document.getElementById('c-details').value
+            };
+
+            try {
+                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                alert("디자인 요청이 성공적으로 접수되었습니다!");
+                document.getElementById('create-form').reset();
+            } catch(err) {
+                alert("제출 중 오류가 발생했습니다.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "디자인 요청 제출하기";
+            }
+        }
+
+        async function fetchRequests() {
+            const sv = document.getElementById('l-sv').value;
+            const contact = document.getElementById('l-contact').value;
+            const container = document.getElementById('results-container');
+
+            if(!sv || !contact) {
+                alert("성함과 연락처를 모두 입력해주세요.");
+                return;
+            }
+
+            container.innerHTML = `<p class="text-center text-slate-500 py-8">요청 내역을 불러오는 중...</p>`;
+
+            try {
+                const res = await fetch(`${API_URL}?sv_name=${encodeURIComponent(sv)}&contact=${encodeURIComponent(contact)}`);
+                const data = await res.json();
+
+                if(data.length === 0) {
+                    container.innerHTML = `<p class="text-center text-slate-500 py-8">일치하는 요청 내역이 없습니다.</p>`;
+                    return;
+                }
+
+                container.innerHTML = data.map(req => `
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 ${req.status === '취소됨' ? 'border-red-400' : 'border-brand'}">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">요청 ID: ${req.id}</span>
+                                <h3 class="text-lg font-bold text-slate-800">${req.store} - ${req.category}</h3>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full ${req.status === '취소됨' ? 'bg-red-100 text-red-600' : 'bg-rose-100 text-brand'}">${req.status}</span>
+                        </div>
+                        
+                        <div class="text-sm text-slate-600 space-y-2 mb-4">
+                            <p><strong>마감희망일:</strong> ${req.deadline}</p>
+                            <p><strong>상세내용:</strong> ${req.details}</p>
+                        </div>
+
+                        ${req.status !== '취소됨' ? `
+                            <div class="flex gap-2 border-t pt-4">
+                                <button onclick="updateRequest('${req.id}')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg">내용 수정</button>
+                                <button onclick="cancelRequest('${req.id}')" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-lg">요청 취소</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                container.innerHTML = `<p class="text-center text-red-500 py-8">조회 실패. 잠시 후 다시 시도해주세요.</p>`;
+            }
+        }
+
+        async function updateRequest(id) {
+            const newCategory = prompt("새로운 디자인 유형을 입력하세요:");
+            const newDeadline = prompt("새로운 마감 희망일을 입력하세요 (YYYY-MM-DD):");
+            const newDetails = prompt("새로운 상세 내용을 입력하세요:");
+
+            if(!newCategory || !newDeadline || !newDetails) return;
+
+            await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "UPDATE", id: id, category: newCategory, deadline: newDeadline, details: newDetails })
+            });
+
+            alert("수정되었습니다.");
+            fetchRequests();
+        }
+
+        async function cancelRequest(id) {
+            if(!confirm("정말 이 요청을 취소하시겠습니까?")) return;
+
+            await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "CANCEL", id: id })
+            });
+
+            alert("취소되었습니다.");
+            fetchRequests();
+        }
+    </script>
+</body>
+</html>
