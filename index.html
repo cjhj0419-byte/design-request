@@ -16,76 +16,202 @@
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
 
+    <!-- 상단 헤더 (우측 본사디자인팀 제거 및 로고 배치) -->
     <header class="bg-brand text-white shadow-lg">
-        <div class="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
+        <div class="max-w-4xl mx-auto px-6 py-5 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <i class="fa-solid fa-pen-ruler text-2xl text-rose-200"></i>
                 <h1 class="text-xl font-bold tracking-wide">DESIGN REQUEST CENTER</h1>
             </div>
-            <span class="text-xs bg-white/20 text-white px-3 py-1 rounded-full border border-white/30">본사 디자인팀</span>
+            <div class="flex items-center">
+                <img src="logo.png" alt="회사 로고" class="h-10 w-auto object-contain" onerror="this.style.display='none'">
+            </div>
         </div>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-8">
+        <!-- 메인 탭 (요청서 작성 / 조회) -->
         <div class="flex border-b border-slate-200 mb-8 bg-white rounded-t-xl p-2 shadow-sm">
-            <button id="tab-create-btn" onclick="switchTab('create')" class="flex-1 py-3 font-semibold text-center text-brand border-b-2 border-brand transition">
+            <button id="tab-create-btn" onclick="switchMainTab('create')" class="flex-1 py-3 font-semibold text-center text-brand border-b-2 border-brand transition">
                 <i class="fa-solid fa-paper-plane mr-2"></i>새 디자인 요청하기
             </button>
-            <button id="tab-lookup-btn" onclick="switchTab('lookup')" class="flex-1 py-3 font-semibold text-center text-slate-500 hover:text-slate-700 transition">
-                <i class="fa-solid fa-list-check mr-2"></i>내 요청 조회 / 수정 · 취소
+            <button id="tab-lookup-btn" onclick="switchMainTab('lookup')" class="flex-1 py-3 font-semibold text-center text-slate-500 hover:text-slate-700 transition">
+                <i class="fa-solid fa-list-check mr-2"></i>내 요청 조회 / 수정
             </button>
         </div>
 
-        <section id="section-create" class="bg-white rounded-2xl shadow-md p-6 sm:p-10">
-            <h2 class="text-lg font-bold text-slate-900 mb-6 pb-2 border-b border-slate-100">요청서 작성</h2>
+        <!-- Section: 작성 폼 -->
+        <section id="section-create" class="bg-white rounded-2xl shadow-md p-6 sm:p-10 space-y-8">
+            
+            <!-- 공통 영역 1: 프로젝트 명 -->
+            <div>
+                <label class="block text-sm font-bold text-slate-800 mb-2">프로젝트 명 *</label>
+                <input type="text" id="c-project-name" required placeholder="예: 2026 여름 신메뉴 프로모션 디자인 요청" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+            </div>
+
+            <!-- 공통 영역 2: 요청서 종류 선택 버튼 -->
+            <div>
+                <label class="block text-sm font-bold text-slate-800 mb-3">요청서 구분을 선택해 주세요 *</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="button" id="btn-type-store" onclick="selectFormType('가맹점')" class="py-3 px-4 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-store"></i> 가맹점 디자인 요청서
+                    </button>
+                    <button type="button" id="btn-type-marketing" onclick="selectFormType('마케팅')" class="py-3 px-4 rounded-xl border-2 border-slate-200 text-slate-500 font-bold transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-bullhorn"></i> 마케팅 디자인 요청서
+                    </button>
+                </div>
+            </div>
+
+            <!-- 공통 영역 3: 브랜드 선택 -->
+            <div>
+                <label class="block text-sm font-bold text-slate-800 mb-2">브랜드 선택 *</label>
+                <select id="c-brand" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
+                    <option value="">브랜드를 선택해 주세요</option>
+                    <option value="광안천지식당">광안천지식당</option>
+                    <option value="천지두루치기">천지두루치기</option>
+                    <option value="오늘은낙곱새">오늘은낙곱새</option>
+                    <option value="천지냉면">천지냉면</option>
+                    <option value="오늘은갈비찜">오늘은갈비찜</option>
+                </select>
+            </div>
+
+            <hr class="border-slate-100 my-6">
+
+            <!-- 폼 입력 영역 -->
             <form id="create-form" onsubmit="handleCreate(event)" class="space-y-6">
+                
+                <!-- 동적 양식: 가맹점 세부 항목 -->
+                <div id="form-store-fields" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">지점명 (가맹점명) *</label>
+                            <input type="text" id="c-store-name" placeholder="예: 강남점" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
+                            <input type="text" id="c-store-sv" placeholder="예: 홍길동" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
+                            <input type="text" id="c-store-contact" placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
+                            <input type="date" id="c-store-deadline" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">작업 분류 선택 *</label>
+                            <select id="c-store-worktype" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                                <option value="">선택하세요</option>
+                                <option value="인쇄물">인쇄물</option>
+                                <option value="배달앱">배달앱</option>
+                                <option value="디지털">디지털</option>
+                                <option value="간판 및 인테리어">간판 및 인테리어</option>
+                                <option value="패키지">패키지</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 *</label>
+                            <input type="text" id="c-store-category" placeholder="예: 매장 POP, 메뉴판 수정, 배너 등" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">수량</label>
+                            <input type="text" id="c-store-quantity" placeholder="예: 100장 / 1개" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">소재</label>
+                            <input type="text" id="c-store-material" placeholder="예: 페트지, 종이, 아크릴 등" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">사이즈</label>
+                            <input type="text" id="c-store-size" placeholder="예: A4, 600x1800mm" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">사용용도</label>
+                            <input type="text" id="c-store-purpose" placeholder="예: 메뉴 홍보용" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">사용장소</label>
+                            <input type="text" id="c-store-place" placeholder="예: 카운터 앞, 매장 입구" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 동적 양식: 마케팅 세부 항목 (초기 숨김) -->
+                <div id="form-marketing-fields" class="space-y-6 hidden">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
+                            <input type="text" id="c-mkt-sv" placeholder="예: 김마케팅" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
+                            <input type="text" id="c-mkt-contact" placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
+                            <input type="date" id="c-mkt-deadline" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 *</label>
+                            <input type="text" id="c-mkt-category" placeholder="예: 카드뉴스, 메인 배너, 이벤트 이미지" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">사용용도</label>
+                            <input type="text" id="c-mkt-purpose" placeholder="예: 신규 프로모션 온라인 홍보" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">업로드 사이트 *</label>
+                            <select id="c-mkt-uploadsite" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                                <option value="">선택하세요</option>
+                                <option value="인스타그램">인스타그램</option>
+                                <option value="블로그">블로그</option>
+                                <option value="네이버 카페">네이버 카페</option>
+                                <option value="당근마켓">당근마켓</option>
+                                <option value="홈페이지">홈페이지</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 공통 하단 항목: 우선순위, 특이사항, 사진 첨부 -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">요청 카테고리 *</label>
-                    <select id="c-request-type" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                        <option value="">카테고리를 선택해 주세요</option>
-                        <option value="가맹점 디자인 요청서">가맹점 디자인 요청서</option>
-                        <option value="마케팅 디자인 요청서">마케팅 디자인 요청서</option>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">우선순위 *</label>
+                    <select id="c-priority" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        <option value="보통">보통</option>
+                        <option value="긴급">긴급</option>
+                        <option value="여유">여유</option>
                     </select>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">지점명 / 부서명 *</label>
-                        <input type="text" id="c-store" required placeholder="예: 강남점 또는 마케팅팀" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
-                        <input type="text" id="c-sv" required placeholder="예: 홍길동" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
-                        <input type="text" id="c-contact" required placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
-                        <input type="date" id="c-deadline" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                    </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">특이사항 및 상세 요청 내용 *</label>
+                    <textarea id="c-details" required rows="4" placeholder="문구, 구성, 참고 디자인 등 요구사항을 상세히 적어주세요." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">세부 디자인 유형 *</label>
-                    <select id="c-category" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
-                        <option value="">세부 유형을 선택해 주세요</option>
-                        <option value="매장 POP / 포스터">매장 POP / 포스터</option>
-                        <option value="메뉴판 수정">메뉴판 수정</option>
-                        <option value="SNS / 온라인 홍보물">SNS / 온라인 홍보물</option>
-                        <option value="현수막 / 외부 배너">현수막 / 외부 배너</option>
-                        <option value="프로모션 / 마케팅 제작물">프로모션 / 마케팅 제작물</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">상세 요청 내용 *</label>
-                    <textarea id="c-details" required rows="5" placeholder="사이즈, 문구, 참고사항을 상세히 기재해주세요." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition"></textarea>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">사진/참고파일 첨부</label>
+                    <input type="file" id="c-file" class="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-brand hover:file:bg-rose-100">
                 </div>
 
                 <button type="submit" id="submit-btn" class="w-full py-4 bg-brand hover-bg-brand text-white font-bold rounded-xl shadow-lg transition duration-200">
@@ -94,6 +220,7 @@
             </form>
         </section>
 
+        <!-- Section: 조회 폼 -->
         <section id="section-lookup" class="hidden space-y-6">
             <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8">
                 <h2 class="text-lg font-bold text-slate-900 mb-4">내 요청 내역 찾기</h2>
@@ -108,9 +235,30 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzolnVhCXEHZcT3hobz-JbbdjM9BhRznEcMt75digtzGDxwPSG1zs8BZtLCQlgm43J_pA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzpbVbVQ80tkAEqIF7_gf3uqRopWTlb6bLHD-FfZ9YaFuNwim_-fV1szkokelLy6lM9/exec";
+        let currentFormType = "가맹점";
 
-        function switchTab(tab) {
+        function selectFormType(type) {
+            currentFormType = type;
+            const btnStore = document.getElementById('btn-type-store');
+            const btnMkt = document.getElementById('btn-type-marketing');
+            const storeFields = document.getElementById('form-store-fields');
+            const mktFields = document.getElementById('form-marketing-fields');
+
+            if(type === '가맹점') {
+                btnStore.className = "py-3 px-4 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex justify-center items-center gap-2";
+                btnMkt.className = "py-3 px-4 rounded-xl border-2 border-slate-200 text-slate-500 font-bold transition flex justify-center items-center gap-2";
+                storeFields.classList.remove('hidden');
+                mktFields.classList.add('hidden');
+            } else {
+                btnMkt.className = "py-3 px-4 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex justify-center items-center gap-2";
+                btnStore.className = "py-3 px-4 rounded-xl border-2 border-slate-200 text-slate-500 font-bold transition flex justify-center items-center gap-2";
+                mktFields.classList.remove('hidden');
+                storeFields.classList.add('hidden');
+            }
+        }
+
+        function switchMainTab(tab) {
             const createBtn = document.getElementById('tab-create-btn');
             const lookupBtn = document.getElementById('tab-lookup-btn');
             const createSec = document.getElementById('section-create');
@@ -133,17 +281,52 @@
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
-            btn.innerText = "제출 중...";
+            btn.innerText = "제출 중 (파일 업로드 포함)...";
 
             const payload = {
                 action: "CREATE",
-                store: `[${document.getElementById('c-request-type').value}] ${document.getElementById('c-store').value}`,
-                sv_name: document.getElementById('c-sv').value,
-                contact: document.getElementById('c-contact').value,
-                deadline: document.getElementById('c-deadline').value,
-                category: document.getElementById('c-category').value,
+                requestType: currentFormType === "가맹점" ? "가맹점 디자인 요청서" : "마케팅 디자인 요청서",
+                projectName: document.getElementById('c-project-name').value,
+                brand: document.getElementById('c-brand').value,
+                priority: document.getElementById('c-priority').value,
                 details: document.getElementById('c-details').value
             };
+
+            if(currentFormType === "가맹점") {
+                payload.store = document.getElementById('c-store-name').value;
+                payload.sv_name = document.getElementById('c-store-sv').value;
+                payload.contact = document.getElementById('c-store-contact').value;
+                payload.deadline = document.getElementById('c-store-deadline').value;
+                payload.workType = document.getElementById('c-store-worktype').value;
+                payload.category = document.getElementById('c-store-category').value;
+                payload.quantity = document.getElementById('c-store-quantity').value;
+                payload.material = document.getElementById('c-store-material').value;
+                payload.size = document.getElementById('c-store-size').value;
+                payload.purpose = document.getElementById('c-store-purpose').value;
+                payload.place = document.getElementById('c-store-place').value;
+            } else {
+                payload.sv_name = document.getElementById('c-mkt-sv').value;
+                payload.contact = document.getElementById('c-mkt-contact').value;
+                payload.deadline = document.getElementById('c-mkt-deadline').value;
+                payload.category = document.getElementById('c-mkt-category').value;
+                payload.purpose = document.getElementById('c-mkt-purpose').value;
+                payload.uploadSite = document.getElementById('c-mkt-uploadsite').value;
+            }
+
+            const fileInput = document.getElementById('c-file');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                await new Promise((resolve) => {
+                    reader.onload = function () {
+                        payload.fileData = reader.result;
+                        payload.fileName = file.name;
+                        payload.fileType = file.type;
+                        resolve();
+                    };
+                });
+            }
 
             try {
                 await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
@@ -179,60 +362,26 @@
                 }
 
                 container.innerHTML = data.map(req => `
-                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 ${req.status === '취소됨' ? 'border-red-400' : 'border-brand'}">
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-brand">
                         <div class="flex justify-between items-start mb-3">
                             <div>
-                                <span class="text-xs font-bold text-slate-400">요청 ID: ${req.id}</span>
-                                <h3 class="text-lg font-bold text-slate-800">${req.store} - ${req.category}</h3>
+                                <span class="text-xs font-bold text-slate-400">[${req.requestType}] ${req.id}</span>
+                                <h3 class="text-lg font-bold text-slate-800">${req.projectName} (${req.brand})</h3>
                             </div>
-                            <span class="px-3 py-1 text-xs font-bold rounded-full ${req.status === '취소됨' ? 'bg-red-100 text-red-600' : 'bg-rose-100 text-brand'}">${req.status}</span>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-rose-100 text-brand">${req.status}</span>
                         </div>
-                        
-                        <div class="text-sm text-slate-600 space-y-2 mb-4">
-                            <p><strong>마감희망일:</strong> ${req.deadline}</p>
+                        <div class="text-sm text-slate-600 space-y-1 mb-4">
+                            <p><strong>우선순위:</strong> ${req.priority}</p>
+                            <p><strong>희망 마감일:</strong> ${req.deadline}</p>
                             <p><strong>상세내용:</strong> ${req.details}</p>
+                            ${req.fileUrl ? `<p><strong>첨부파일:</strong> <a href="${req.fileUrl}" target="_blank" class="text-blue-600 underline">파일 열기</a></p>` : ''}
                         </div>
-
-                        ${req.status !== '취소됨' ? `
-                            <div class="flex gap-2 border-t pt-4">
-                                <button onclick="updateRequest('${req.id}')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg">내용 수정</button>
-                                <button onclick="cancelRequest('${req.id}')" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-lg">요청 취소</button>
-                            </div>
-                        ` : ''}
                     </div>
                 `).join('');
 
             } catch(e) {
                 container.innerHTML = `<p class="text-center text-red-500 py-8">조회 실패. 잠시 후 다시 시도해주세요.</p>`;
             }
-        }
-
-        async function updateRequest(id) {
-            const newCategory = prompt("새로운 디자인 유형을 입력하세요:");
-            const newDeadline = prompt("새로운 마감 희망일을 입력하세요 (YYYY-MM-DD):");
-            const newDetails = prompt("새로운 상세 내용을 입력하세요:");
-
-            if(!newCategory || !newDeadline || !newDetails) return;
-
-            await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "UPDATE", id: id, category: newCategory, deadline: newDeadline, details: newDetails })
-            });
-
-            alert("수정되었습니다.");
-            fetchRequests();
-        }
-
-        async function cancelRequest(id) {
-            if(!confirm("정말 이 요청을 취소하시겠습니까?")) return;
-
-            await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "CANCEL", id: id })
-            });
-
-            alert("취소되었습니다.");
-            fetchRequests();
         }
     </script>
 </body>
