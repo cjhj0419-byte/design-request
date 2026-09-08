@@ -12,6 +12,9 @@
         .border-brand { border-color: #722F37; }
         .hover-bg-brand:hover { background-color: #5c252c; }
         .focus-ring-brand:focus { --tw-ring-color: #722F37; }
+        
+        /* 필수 선택 표시(*) 빨간색 스타일 */
+        .required-star { color: #ef4444; font-weight: bold; margin-left: 2px; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
@@ -23,7 +26,6 @@
         </div>
     </header>
 
-    
     <main class="max-w-4xl mx-auto px-4 py-8">
         <!-- 메인 탭 (요청서 작성 / 조회) -->
         <div class="flex border-b border-slate-200 mb-8 bg-white rounded-t-xl p-2 shadow-sm">
@@ -40,13 +42,13 @@
             
             <!-- 공통 영역 1: 프로젝트 명 -->
             <div>
-                <label class="block text-sm font-bold text-slate-800 mb-2">프로젝트 명 *</label>
+                <label class="block text-sm font-bold text-slate-800 mb-2">프로젝트 명 <span class="required-star">*</span></label>
                 <input type="text" id="c-project-name" required placeholder="예: 2026 여름 신메뉴 프로모션 디자인 요청" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
             </div>
 
-            <!-- 공통 영역 2: 요청서 종류 선택 버튼 -->
+            <!-- 공통 영역 2: 요청서 구분 선택 버튼 -->
             <div>
-                <label class="block text-sm font-bold text-slate-800 mb-3">요청서 구분을 선택해 주세요 *</label>
+                <label class="block text-sm font-bold text-slate-800 mb-3">요청서 구분을 선택해 주세요 <span class="required-star">*</span></label>
                 <div class="grid grid-cols-2 gap-4">
                     <button type="button" id="btn-type-store" onclick="selectFormType('가맹점')" class="py-3 px-4 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex justify-center items-center gap-2">
                         <i class="fa-solid fa-store"></i> 가맹점 디자인 요청서
@@ -59,7 +61,7 @@
 
             <!-- 공통 영역 3: 브랜드 선택 -->
             <div>
-                <label class="block text-sm font-bold text-slate-800 mb-2">브랜드 선택 *</label>
+                <label class="block text-sm font-bold text-slate-800 mb-2">브랜드 선택 <span class="required-star">*</span></label>
                 <select id="c-brand" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand transition">
                     <option value="">브랜드를 선택해 주세요</option>
                     <option value="광안천지식당">광안천지식당</option>
@@ -79,53 +81,67 @@
                 <div id="form-store-fields" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">지점명 (가맹점명) *</label>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">지점명 (가맹점명) <span class="required-star">*</span></label>
                             <input type="text" id="c-store-name" placeholder="예: 강남점" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
-                            <input type="text" id="c-store-sv" placeholder="예: 홍길동" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
-                            <input type="text" id="c-store-contact" placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
-                            <input type="date" id="c-store-deadline" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">작업 분류 선택 *</label>
-                            <select id="c-store-worktype" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                                <option value="">선택하세요</option>
-                                <option value="인쇄물">인쇄물</option>
-                                <option value="배달앱">배달앱</option>
-                                <option value="디지털">디지털</option>
-                                <option value="간판 및 인테리어">간판 및 인테리어</option>
-                                <option value="패키지">패키지</option>
-                                <option value="기타">기타</option>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 <span class="required-star">*</span></label>
+                            <select id="c-store-sv" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                                <option value="">성함을 선택해 주세요</option>
+                                <option value="김현준">김현준</option>
+                                <option value="최장호">최장호</option>
+                                <option value="이소영">이소영</option>
+                                <option value="양지선">양지선</option>
+                                <option value="김의현">김의현</option>
+                                <option value="황인찬">황인찬</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 *</label>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 <span class="required-star">*</span></label>
+                            <input type="date" id="c-store-deadline" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 <span class="required-star">*</span></label>
                             <input type="text" id="c-store-category" placeholder="예: 매장 POP, 메뉴판 수정, 배너 등" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
+                    </div>
+
+                    <!-- 작업 분류 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3">작업 분류 선택 <span class="required-star">*</span></label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="store-worktype-group">
+                            <button type="button" onclick="selectWorkType('인쇄물')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="인쇄물">
+                                <i class="fa-solid fa-print"></i> 인쇄물
+                            </button>
+                            <button type="button" onclick="selectWorkType('배달앱')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="배달앱">
+                                <i class="fa-solid fa-motorcycle"></i> 배달앱
+                            </button>
+                            <button type="button" onclick="selectWorkType('디지털')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="디지털">
+                                <i class="fa-solid fa-laptop"></i> 디지털
+                            </button>
+                            <button type="button" onclick="selectWorkType('간판 및 인테리어')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2 text-xs sm:text-sm" data-value="간판 및 인테리어">
+                                <i class="fa-solid fa-store"></i> 간판/인테리어
+                            </button>
+                            <button type="button" onclick="selectWorkType('패키지')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="패키지">
+                                <i class="fa-solid fa-box"></i> 패키지
+                            </button>
+                            <button type="button" onclick="selectWorkType('기타')" class="btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="기타">
+                                <i class="fa-solid fa-ellipsis"></i> 기타
+                            </button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">수량</label>
-                            <input type="text" id="c-store-quantity" placeholder="예: 100장 / 1개" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                            <input type="text" id="c-store-quantity" placeholder="예: 1개" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">소재</label>
-                            <input type="text" id="c-store-material" placeholder="예: 페트지, 종이, 아크릴 등" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                            <input type="text" id="c-store-material" placeholder="예: 스티커, 시트지" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">사이즈</label>
@@ -136,7 +152,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">사용용도</label>
-                            <input type="text" id="c-store-purpose" placeholder="예: 메뉴 홍보용" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                            <input type="text" id="c-store-purpose" placeholder="예: 배민 인증용" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">사용장소</label>
@@ -145,53 +161,67 @@
                     </div>
                 </div>
 
-                <!-- 동적 양식: 마케팅 세부 항목 (초기 숨김) -->
+                <!-- 동적 양식: 마케팅 세부 항목 -->
                 <div id="form-marketing-fields" class="space-y-6 hidden">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 *</label>
-                            <input type="text" id="c-mkt-sv" placeholder="예: 김마케팅" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">요청자 성함 <span class="required-star">*</span></label>
+                            <select id="c-mkt-sv" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                                <option value="">성함을 선택해 주세요</option>
+                                <option value="김현준">김현준</option>
+                                <option value="최장호">최장호</option>
+                                <option value="이소영">이소영</option>
+                                <option value="양지선">양지선</option>
+                                <option value="김의현">김의현</option>
+                                <option value="황인찬">황인찬</option>
+                            </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">연락처 *</label>
-                            <input type="text" id="c-mkt-contact" placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 *</label>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 마감일 <span class="required-star">*</span></label>
                             <input type="date" id="c-mkt-deadline" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 *</label>
-                            <input type="text" id="c-mkt-category" placeholder="예: 카드뉴스, 메인 배너, 이벤트 이미지" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">디자인 유형 <span class="required-star">*</span></label>
+                            <input type="text" id="c-mkt-category" placeholder="예: 카드뉴스, 메인 배너, 이벤트 이미지" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">사용용도</label>
                             <input type="text" id="c-mkt-purpose" placeholder="예: 신규 프로모션 온라인 홍보" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">업로드 사이트 *</label>
-                            <select id="c-mkt-uploadsite" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                                <option value="">선택하세요</option>
-                                <option value="인스타그램">인스타그램</option>
-                                <option value="블로그">블로그</option>
-                                <option value="네이버 카페">네이버 카페</option>
-                                <option value="당근마켓">당근마켓</option>
-                                <option value="홈페이지">홈페이지</option>
-                                <option value="기타">기타</option>
-                            </select>
+                    </div>
+
+                    <!-- 업로드 사이트 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3">업로드 사이트 <span class="required-star">*</span></label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="mkt-uploadsite-group">
+                            <button type="button" onclick="selectUploadSite('인스타그램')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="인스타그램">
+                                <i class="fa-brands fa-instagram"></i> 인스타그램
+                            </button>
+                            <button type="button" onclick="selectUploadSite('블로그')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="블로그">
+                                <i class="fa-solid fa-blog"></i> 블로그
+                            </button>
+                            <button type="button" onclick="selectUploadSite('네이버 카페')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="네이버 카페">
+                                <i class="fa-solid fa-comments"></i> 네이버 카페
+                            </button>
+                            <button type="button" onclick="selectUploadSite('당근마켓')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="당근마켓">
+                                <i class="fa-solid fa-carrot"></i> 당근마켓
+                            </button>
+                            <button type="button" onclick="selectUploadSite('홈페이지')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="홈페이지">
+                                <i class="fa-solid fa-globe"></i> 홈페이지
+                            </button>
+                            <button type="button" onclick="selectUploadSite('기타')" class="btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2" data-value="기타">
+                                <i class="fa-solid fa-ellipsis"></i> 기타
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 공통 하단 항목: 우선순위, 특이사항, 사진 첨부 -->
+                <!-- 공통 하단 항목 -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">우선순위 *</label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">우선순위 <span class="required-star">*</span></label>
                     <select id="c-priority" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
                         <option value="보통">보통</option>
                         <option value="긴급">긴급</option>
@@ -200,7 +230,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">특이사항 및 상세 요청 내용 *</label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">특이사항 및 상세 요청 내용 <span class="required-star">*</span></label>
                     <textarea id="c-details" required rows="4" placeholder="문구, 구성, 참고 디자인 등 요구사항을 상세히 적어주세요." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand"></textarea>
                 </div>
 
@@ -220,8 +250,15 @@
             <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8">
                 <h2 class="text-lg font-bold text-slate-900 mb-4">내 요청 내역 찾기</h2>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" id="l-sv" placeholder="작성자 성함" class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
-                    <input type="text" id="l-contact" placeholder="연락처 (예: 010-1234-5678)" class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                    <select id="l-sv" class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus-ring-brand">
+                        <option value="">성함을 선택하세요</option>
+                        <option value="김현준">김현준</option>
+                        <option value="최장호">최장호</option>
+                        <option value="이소영">이소영</option>
+                        <option value="양지선">양지선</option>
+                        <option value="김의현">김의현</option>
+                        <option value="황인찬">황인찬</option>
+                    </select>
                     <button onclick="fetchRequests()" class="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg transition">조회</button>
                 </div>
             </div>
@@ -232,6 +269,8 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbzpbVbVQ80tkAEqIF7_gf3uqRopWTlb6bLHD-FfZ9YaFuNwim_-fV1szkokelLy6lM9/exec";
         let currentFormType = "가맹점";
+        let selectedWorkType = "";
+        let selectedUploadSite = "";
 
         function selectFormType(type) {
             currentFormType = type;
@@ -251,6 +290,28 @@
                 mktFields.classList.remove('hidden');
                 storeFields.classList.add('hidden');
             }
+        }
+
+        function selectWorkType(value) {
+            selectedWorkType = value;
+            document.querySelectorAll('.btn-worktype').forEach(btn => {
+                if(btn.dataset.value === value) {
+                    btn.className = "btn-worktype py-3 px-3 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex items-center justify-center gap-2 text-xs sm:text-sm";
+                } else {
+                    btn.className = "btn-worktype py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2 text-xs sm:text-sm";
+                }
+            });
+        }
+
+        function selectUploadSite(value) {
+            selectedUploadSite = value;
+            document.querySelectorAll('.btn-uploadsite').forEach(btn => {
+                if(btn.dataset.value === value) {
+                    btn.className = "btn-uploadsite py-3 px-3 rounded-xl border-2 border-brand bg-rose-50 text-brand font-bold transition flex items-center justify-center gap-2 text-xs sm:text-sm";
+                } else {
+                    btn.className = "btn-uploadsite py-3 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold transition flex items-center justify-center gap-2 text-xs sm:text-sm";
+                }
+            });
         }
 
         function switchMainTab(tab) {
@@ -274,6 +335,27 @@
 
         async function handleCreate(e) {
             e.preventDefault();
+
+            if(currentFormType === "가맹점") {
+                if(!document.getElementById('c-store-sv').value) {
+                    alert("요청자 성함을 선택해주세요.");
+                    return;
+                }
+                if(!selectedWorkType) {
+                    alert("작업 분류를 선택해주세요.");
+                    return;
+                }
+            } else {
+                if(!document.getElementById('c-mkt-sv').value) {
+                    alert("요청자 성함을 선택해주세요.");
+                    return;
+                }
+                if(!selectedUploadSite) {
+                    alert("업로드 사이트를 선택해주세요.");
+                    return;
+                }
+            }
+
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
             btn.innerText = "제출 중 (파일 업로드 포함)...";
@@ -290,9 +372,8 @@
             if(currentFormType === "가맹점") {
                 payload.store = document.getElementById('c-store-name').value;
                 payload.sv_name = document.getElementById('c-store-sv').value;
-                payload.contact = document.getElementById('c-store-contact').value;
                 payload.deadline = document.getElementById('c-store-deadline').value;
-                payload.workType = document.getElementById('c-store-worktype').value;
+                payload.workType = selectedWorkType;
                 payload.category = document.getElementById('c-store-category').value;
                 payload.quantity = document.getElementById('c-store-quantity').value;
                 payload.material = document.getElementById('c-store-material').value;
@@ -301,11 +382,10 @@
                 payload.place = document.getElementById('c-store-place').value;
             } else {
                 payload.sv_name = document.getElementById('c-mkt-sv').value;
-                payload.contact = document.getElementById('c-mkt-contact').value;
                 payload.deadline = document.getElementById('c-mkt-deadline').value;
                 payload.category = document.getElementById('c-mkt-category').value;
                 payload.purpose = document.getElementById('c-mkt-purpose').value;
-                payload.uploadSite = document.getElementById('c-mkt-uploadsite').value;
+                payload.uploadSite = selectedUploadSite;
             }
 
             const fileInput = document.getElementById('c-file');
@@ -327,6 +407,11 @@
                 await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
                 alert("디자인 요청이 성공적으로 접수되었습니다!");
                 document.getElementById('create-form').reset();
+                selectedWorkType = "";
+                selectedUploadSite = "";
+                document.querySelectorAll('.btn-worktype, .btn-uploadsite').forEach(b => {
+                    b.className = b.className.replace('border-brand bg-rose-50 text-brand', 'border-slate-200 text-slate-600');
+                });
             } catch(err) {
                 alert("제출 중 오류가 발생했습니다.");
             } finally {
@@ -337,18 +422,17 @@
 
         async function fetchRequests() {
             const sv = document.getElementById('l-sv').value;
-            const contact = document.getElementById('l-contact').value;
             const container = document.getElementById('results-container');
 
-            if(!sv || !contact) {
-                alert("성함과 연락처를 모두 입력해주세요.");
+            if(!sv) {
+                alert("성함을 선택해주세요.");
                 return;
             }
 
             container.innerHTML = `<p class="text-center text-slate-500 py-8">요청 내역을 불러오는 중...</p>`;
 
             try {
-                const res = await fetch(`${API_URL}?sv_name=${encodeURIComponent(sv)}&contact=${encodeURIComponent(contact)}`);
+                const res = await fetch(`${API_URL}?sv_name=${encodeURIComponent(sv)}`);
                 const data = await res.json();
 
                 if(data.length === 0) {
@@ -366,6 +450,7 @@
                             <span class="px-3 py-1 text-xs font-bold rounded-full bg-rose-100 text-brand">${req.status}</span>
                         </div>
                         <div class="text-sm text-slate-600 space-y-1 mb-4">
+                            <p><strong>작성자:</strong> ${req.sv_name}</p>
                             <p><strong>우선순위:</strong> ${req.priority}</p>
                             <p><strong>희망 마감일:</strong> ${req.deadline}</p>
                             <p><strong>상세내용:</strong> ${req.details}</p>
